@@ -12,6 +12,7 @@ import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketSe
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.IdleStateHandler;
+import io.netty.util.ReferenceCountUtil;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -878,17 +879,19 @@ public class App {
                 try {
                     byte[] data = new byte[buf.readableBytes()];
                     buf.readBytes(data);
-            
+                    
                     if (inboundChannel.isActive()) {
                         inboundChannel.writeAndFlush(new BinaryWebSocketFrame(Unpooled.wrappedBuffer(data)));
                     }
                 } finally {
+                    // 修复内存泄露的关键代码：手动释放 ByteBuf
                     ReferenceCountUtil.release(buf);
                 }
             } else {
-                ctx.fireChannelRead(msg); // 非预期类型，传递给下一个 handler
+                // 如果不是 ByteBuf，继续向下传递
+                ctx.fireChannelRead(msg);
             }
-         }
+        }
         
         @Override
         public void channelInactive(ChannelHandlerContext ctx) {
@@ -986,4 +989,3 @@ public class App {
     }
 
 }
-
