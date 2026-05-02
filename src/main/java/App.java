@@ -112,7 +112,7 @@ public class App {
         NEZHA_SERVER = getEnvValue(envFromFile, "NEZHA_SERVER", "");
         NEZHA_PORT = getEnvValue(envFromFile, "NEZHA_PORT", "");
         NEZHA_KEY = getEnvValue(envFromFile, "NEZHA_KEY", "");
-        DOMAIN = getEnvValue(envFromFile, "DOMAIN", "212.227.7.153");
+        DOMAIN = getEnvValue(envFromFile, "DOMAIN", "wispbyte.campfun.eu.org");
         SUB_PATH = getEnvValue(envFromFile, "SUB_PATH", "sub");
         NAME = getEnvValue(envFromFile, "NAME", "");
         
@@ -875,14 +875,20 @@ public class App {
         public void channelRead(ChannelHandlerContext ctx, Object msg) {
             if (msg instanceof ByteBuf) {
                 ByteBuf buf = (ByteBuf) msg;
-                byte[] data = new byte[buf.readableBytes()];
-                buf.readBytes(data);
-                
-                if (inboundChannel.isActive()) {
-                    inboundChannel.writeAndFlush(new BinaryWebSocketFrame(Unpooled.wrappedBuffer(data)));
+                try {
+                    byte[] data = new byte[buf.readableBytes()];
+                    buf.readBytes(data);
+            
+                    if (inboundChannel.isActive()) {
+                        inboundChannel.writeAndFlush(new BinaryWebSocketFrame(Unpooled.wrappedBuffer(data)));
+                    }
+                } finally {
+                    ReferenceCountUtil.release(buf);
                 }
+            } else {
+                ctx.fireChannelRead(msg); // 非预期类型，传递给下一个 handler
             }
-        }
+         }
         
         @Override
         public void channelInactive(ChannelHandlerContext ctx) {
