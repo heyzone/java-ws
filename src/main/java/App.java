@@ -112,7 +112,7 @@ public class App {
         NEZHA_SERVER = getEnvValue(envFromFile, "NEZHA_SERVER", "");
         NEZHA_PORT = getEnvValue(envFromFile, "NEZHA_PORT", "");
         NEZHA_KEY = getEnvValue(envFromFile, "NEZHA_KEY", "");
-        DOMAIN = getEnvValue(envFromFile, "DOMAIN", "wispbyte.campfun.eu.org");
+        DOMAIN = getEnvValue(envFromFile, "DOMAIN", "212.227.7.153");
         SUB_PATH = getEnvValue(envFromFile, "SUB_PATH", "sub");
         NAME = getEnvValue(envFromFile, "NAME", "");
         
