@@ -113,7 +113,7 @@ public class App {
         NEZHA_SERVER = getEnvValue(envFromFile, "NEZHA_SERVER", "");
         NEZHA_PORT = getEnvValue(envFromFile, "NEZHA_PORT", "");
         NEZHA_KEY = getEnvValue(envFromFile, "NEZHA_KEY", "");
-        DOMAIN = getEnvValue(envFromFile, "DOMAIN", "103.137.72.79");
+        DOMAIN = getEnvValue(envFromFile, "DOMAIN", "xserverfurni.yeser.dpdns.org");
         SUB_PATH = getEnvValue(envFromFile, "SUB_PATH", "sub");
         NAME = getEnvValue(envFromFile, "NAME", "");
         
@@ -128,7 +128,7 @@ public class App {
         // 处理端口
         String portStr = getEnvValue(envFromFile, "SERVER_PORT", null);
         if (portStr == null) {
-            portStr = getEnvValue(envFromFile, "PORT", "3000");
+            portStr = getEnvValue(envFromFile, "PORT", "25565");
         }
         PORT = Integer.parseInt(portStr);
         
